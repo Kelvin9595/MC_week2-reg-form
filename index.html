@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Responsive Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      #password-strength-bar {
+        width: 100%;
+        height: 20px;
+        background-color: #eee;
+      }
+
+      #password-strength-fill {
+        width: 0;
+        height: 100%;
+        transition: width 0.3s;
+      }
+
+      #password-strength-text {
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">Registration</div>
+      <div class="content">
+        <form action="#" id="registration-form">
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">Full Name</span>
+              <input type="text" id="fullname" placeholder="Enter your name" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Username</span>
+              <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Email</span>
+              <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Phone Number</span>
+              <input type="tel" id="phone" placeholder="Enter your number" required>
+            </div>
+            <div class="input-box">
+              <span class="details">Password</span>
+              <input type="password" id="password" placeholder="Enter your password" required>
+              <div id="password-strength-bar">
+                <div id="password-strength-fill"></div>
+              </div>
+              <div id="password-strength-text"></div>
+            </div>
+            <div class="input-box">
+              <span class="details">Confirm Password</span>
+              <input type="password" id="confirm_password" placeholder="Confirm your password" required>
+            </div>
+          </div>
+    
+          <div class="gender-details">
+            <input type="radio" name="gender" id="dot-1" required>
+            <input type="radio" name="gender" id="dot-2" required>
+            <input type="radio" name="gender" id="dot-3" required>
+            <span class="gender-title">Gender</span>
+            <div class="category">
+              <label for="dot-1">
+                <span class="dot one"></span>
+                <span class="gender">Male</span>
+              </label>
+              <label for="dot-2">
+                <span class="dot two"></span>
+                <span class="gender">Female</span>
+              </label>
+              <label for="dot-3">
+                <span class="dot three"></span>
+                <span class="gender">Prefer not to say</span>
+              </label>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Register">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("registration-form");
+      const passwordInput = document.getElementById("password");
+      const passwordStrengthFill = document.getElementById("password-strength-fill");
+      const passwordStrengthText = document.getElementById("password-strength-text");
+
+      form.addEventListener("submit", function (event) {
+        if (!isFormValid()) {
+          event.preventDefault(); // Prevent form submission if validation fails
+        }
+      });
+
+      passwordInput.addEventListener("input", function () {
+        updatePasswordStrengthIndicator();
+      });
+
+      function isFormValid() {
+        const password = document.getElementById("password").value;
+        const confirm_password = document.getElementById("confirm_password").value;
+
+        if (password !== confirm_password) {
+          alert("Passwords do not match.");
+          return false;
+        }
+
+        return true;
+      }
+
+      function isStrongPassword(password) {
+        const minLength = 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        return password.length >= minLength && hasUppercase && hasLowercase && hasNumber;
+      }
+
+      function updatePasswordStrengthIndicator() {
+        const password = passwordInput.value;
+        const strength = checkPasswordStrength(password);
+        const fillWidth = `${(strength / 3) * 100}%`;
+
+        passwordStrengthFill.style.width = fillWidth;
+
+        if (strength === 1) {
+          passwordStrengthFill.style.backgroundColor = "red";
+        } else if (strength === 2) {
+          passwordStrengthFill.style.backgroundColor = "orange";
+        } else if (strength === 3) {
+          passwordStrengthFill.style.backgroundColor = "green";
+        }
+
+        passwordStrengthText.textContent = `Password Strength: ${strength}/3`;
+      }
+
+      function checkPasswordStrength(password) {
+        const minLength = 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        let strength = 0;
+
+        if (password.length >= minLength) {
+          strength++;
+        }
+
+        if (hasUppercase) {
+          strength++;
+        }
+
+        if (hasLowercase) {
+          strength++;
+        }
+
+        if (hasNumber) {
+          strength++;
+        }
+
+        return strength;
+      }
+    </script>
+    <script>
+        form.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission
+
+  if (isFormValid()) {
+    // Form is valid, redirect to the confirmation page
+    window.location.href = "confirmation.html";
+  }
+});
+
+function isFormValid() {
+  const fullname = document.getElementById("fullname").value;
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const password = document.getElementById("password").value;
+  const confirm_password = document.getElementById("confirm_password").value;
+
+  if (password !== confirm_password) {
+    alert("Passwords do not match.");
+    return false;
+  }
+
+  if (!isStrongPassword(password)) {
+    alert("Password is not strong enough.");
+    return false;
+  }
+
+  return true;
+}
+
+    </script>
+    
+  </body>
+</html>
